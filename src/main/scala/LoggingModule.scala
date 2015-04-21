@@ -70,10 +70,23 @@ class Slf4jLogger(logger: Logger) extends org.slf4j.helpers.MarkerIgnoringBase
   def isTraceEnabled(): Boolean = logger.underlying.isEnabled(Level.Debug)
 }
 
-trait IngLoggingModule extends LoggingModule {
+trait IngLoggingModule extends LoggingModule
+  with ConfigModule {
+
+  private case class LoggingConfig(
+    debugEnabled: Boolean)
+
+  private val loggingConfig = config.get { conf =>
+    LoggingConfig(
+      debugEnabled = (conf.hasPath(s"$projectName.logging.debug") &&
+        conf.getBoolean(s"$projectName.logging.debug"))
+    )
+  }
+
   private val transports = Seq(new transport.Console())
 
   override def logger(name: String): Logger = Logger(name, transports, {
+    case Level.Debug => loggingConfig.debugEnabled
     case _ => true
   })
 

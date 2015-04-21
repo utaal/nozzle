@@ -11,14 +11,13 @@ trait ConfigModule {
       testMode = if (conf.hasPath("banksealer.testMode"))
                    conf.getBoolean("banksealer.testMode") else false
     )
-    private var confCache = collection.mutable.HashMap[Function1[Config, _], Any]()
+    private var confCache = collection.mutable.HashSet[Function1[Config, _]]()
     def get[T](loader: Config => T) = {
-      confCache.get(loader).map { t =>
-        t.asInstanceOf[T]
-      }.getOrElse {
-        val loaded = loader(conf)
-        confCache(loader) = loaded
-        loaded
+      if (confCache.contains(loader)) {
+        throw new Exception("config.get has already been called with this function - it should only be called once at initialization")
+      } else {
+        confCache += loader
+        loader(conf)
       }
     }
   }
