@@ -5,9 +5,8 @@ import spray.routing._
 import scala.concurrent.Future
 
 trait MonadicCtrlRouterModule extends RouterModule
-  with MonadicCtrlModule {
-
-  case class WebResponse[T](value: T)
+  with MonadicCtrlModule
+  with JsonModule {
 
   import spray.httpx.marshalling._
   implicit def controllerFlowMarshaller[T](

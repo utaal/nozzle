@@ -1,6 +1,6 @@
 name := "base"
 
-version := "0.2.2"
+version := "0.2.4"
 
 libraryDependencies ++= {
   val akkaV = "2.3.9"

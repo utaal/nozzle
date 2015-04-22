@@ -22,6 +22,7 @@ trait MonadicCtrlModule {
     case class InvalidOperation(desc: String) extends CtrlError
     case object InvalidCredentials extends CtrlError
     case class Forbidden(desc: String) extends CtrlError
+    case object NotFound extends CtrlError
   }
 
   type CtrlFlowT[F[_], B] = EitherT[F, CtrlError, B]
