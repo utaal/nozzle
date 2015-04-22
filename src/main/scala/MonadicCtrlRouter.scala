@@ -7,12 +7,14 @@ import scala.concurrent.Future
 trait MonadicCtrlRouterModule extends RouterModule
   with MonadicCtrlModule {
 
+  case class WebResponse[T](value: T)
+
   import spray.httpx.marshalling._
   implicit def controllerFlowMarshaller[T](
-    implicit m: ToResponseMarshaller[T],
+    implicit m: ToResponseMarshaller[WebResponse[T]],
              em: ToResponseMarshaller[(StatusCode, CtrlError)]) =
       ToResponseMarshaller[CtrlFlow[T]] { (value, ctx) =>
-        value.map((right: T) => m(right, ctx))
+        value.map((right: T) => m(WebResponse(right), ctx))
           .valueOr { (left: CtrlError) =>
             val statusCode = left match {
                  case CtrlError.InvalidParam(_, _)         => StatusCodes.UnprocessableEntity
