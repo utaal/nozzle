@@ -1,6 +1,6 @@
 name := "base"
 
-version       := "0.1-SNAPSHOT"
+version := "0.2.1"
 
 libraryDependencies ++= {
   val akkaV = "2.3.9"
@@ -14,6 +14,7 @@ libraryDependencies ++= {
     "io.spray"       %% "spray-can"     % sprayV,
     "io.spray"       %% "spray-routing-shapeless2" % sprayV,
     "io.spray"       %% "spray-httpx"   % sprayV,
+    "org.scalaz"     %%  "scalaz-core"  % "7.1.1",
     "joda-time"      %  "joda-time"     % "2.3",
     "com.github.nscala-time" %% "nscala-time" % "1.2.0",
     "org.scalatest"  %% "scalatest"     % "2.2.0" % "test",
