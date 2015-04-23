@@ -1,6 +1,6 @@
 name := "base"
 
-version := "0.2.4"
+version := "0.2.5"
 
 libraryDependencies ++= {
   val akkaV = "2.3.9"
@@ -8,6 +8,7 @@ libraryDependencies ++= {
   Seq(
     "io.buildo"      %% "spray-autoproductformat" % "0.2",
     "io.buildo"      %% "ingredients-logging"    % "0.3",
+    "io.buildo"      %% "ingredients-jsend"      % "0.3",
     "org.slf4j"      %  "slf4j-api"     % "1.7.7",
     "com.typesafe"   %  "config"        % "1.2.1",
     "com.typesafe.akka" %% "akka-actor" % akkaV,
