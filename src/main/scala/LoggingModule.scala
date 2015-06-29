@@ -6,6 +6,8 @@ import io.buildo.ingredients.logging._
 trait LoggingModule {
   def logger(name: String): Logger
   def nameOf[T]: String = macro Logger.nameOf[T]
+
+  def logsEnabled(name: String, level: Level): Boolean
 }
 
 class Slf4jLogger(logger: Logger) extends org.slf4j.helpers.MarkerIgnoringBase
@@ -77,6 +79,9 @@ trait IngLoggingModule extends LoggingModule
     debugEnabled: Boolean)
 
   private val loggingConfig = config.get { conf =>
+    if (projectName == null) {
+      throw new Exception("Missing project name, likely an initialization order issue");
+    }
     LoggingConfig(
       debugEnabled = (conf.hasPath(s"$projectName.logging.debug") &&
         conf.getBoolean(s"$projectName.logging.debug"))
@@ -85,15 +90,16 @@ trait IngLoggingModule extends LoggingModule
 
   private val transports = Seq(new transport.Console())
 
-  override def logger(name: String): Logger = Logger(name, transports, {
-    case Level.Debug => loggingConfig.debugEnabled
-    case _ => true
+  override def logger(name: String): Logger = Logger(name, transports,
+    PartialFunction { level => (level match {
+      case Level.Debug => loggingConfig.debugEnabled
+      case _ => true
+    }) && logsEnabled(name, level)
   })
 
   org.slf4j.impl.SimpleLoggerFactory.setLoggerFactoryInterface(
     new org.slf4j.impl.LoggerFactoryInterface {
-      override def getNewLogger(name: String) = new Slf4jLogger(
-        logger(name))
+      override def getNewLogger(name: String) = new Slf4jLogger(logger(name))
     })
 }
 
