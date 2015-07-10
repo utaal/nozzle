@@ -1,11 +1,15 @@
 package io.buildo.base
 
+import com.typesafe.config._
+
 trait Boot extends App
   with ConfigModule
   with IngLoggingModule
   with RouterModule {
 
   private val log = logger(nameOf[Boot])
+
+  lazy val conf = ConfigFactory.load()
 
   case class BootConfig(
     interface: String,
@@ -25,7 +29,8 @@ trait Boot extends App
         port = conf.getInt(s"$projectName.port"))
     }
 
-    implicit val system = akka.actor.ActorSystem(s"$projectName")
+    implicit val system: akka.actor.ActorSystem =
+      akka.actor.ActorSystem(s"$projectName", actorSystemLoggingConf.withFallback(conf))
 
     val service = system.actorOf(routerActorProps, s"$projectName-router")
 

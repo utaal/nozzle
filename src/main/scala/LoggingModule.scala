@@ -1,16 +1,15 @@
 package io.buildo.base
 
+import com.typesafe.config._
 import scala.language.experimental.macros
 import io.buildo.ingredients.logging._
 
 trait LoggingModule {
   def logger(name: String): Logger
   def nameOf[T]: String = macro Logger.nameOf[T]
-
-  def logsEnabled(name: String, level: Level): Boolean
 }
 
-class Slf4jLogger(logger: Logger) extends org.slf4j.helpers.MarkerIgnoringBase
+class Slf4jLogger(logger: PlainOldLogger) extends org.slf4j.helpers.MarkerIgnoringBase
     with org.slf4j.Logger {
 
   import org.slf4j.helpers.MessageFormatter
@@ -78,6 +77,8 @@ trait IngLoggingModule extends LoggingModule
   private case class LoggingConfig(
     debugEnabled: Boolean)
 
+  def logsEnabled(name: String, level: Level): Boolean
+
   private val loggingConfig = config.get { conf =>
     if (projectName == null) {
       throw new Exception("Missing project name, likely an initialization order issue");
@@ -88,6 +89,15 @@ trait IngLoggingModule extends LoggingModule
     )
   }
 
+  val actorSystemLoggingConf = ConfigFactory.parseString(s"""
+    akka {
+      loglevel = "${if(loggingConfig.debugEnabled) "DEBUG" else "INFO"}"
+      stdout-loglevel = "DEBUG"
+      loggers = ["akka.event.slf4j.Slf4jLogger"]
+      logging-filter = "akka.event.slf4j.Slf4jLoggingFilter"
+    }
+  """)
+
   private val transports = Seq(new transport.Console())
 
   override def logger(name: String): Logger = Logger(name, transports,
@@ -97,9 +107,16 @@ trait IngLoggingModule extends LoggingModule
     }) && logsEnabled(name, level)
   })
 
+  private[this] def plainOldLogger(name: String): PlainOldLogger = PlainOldLogger(name, transports,
+    PartialFunction { level => (level match {
+      case Level.Debug => loggingConfig.debugEnabled
+      case _ => true
+    }) && logsEnabled(name, level)
+  })
+
   org.slf4j.impl.SimpleLoggerFactory.setLoggerFactoryInterface(
     new org.slf4j.impl.LoggerFactoryInterface {
-      override def getNewLogger(name: String) = new Slf4jLogger(logger(name))
+      override def getNewLogger(name: String) = new Slf4jLogger(plainOldLogger(name))
     })
 }
 

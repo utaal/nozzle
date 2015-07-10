@@ -7,11 +7,12 @@ libraryDependencies ++= {
   val sprayV = "1.3.3"
   Seq(
     "io.buildo"      %% "spray-autoproductformat" % "0.2",
-    "io.buildo"      %% "ingredients-logging"    % "0.3",
+    "io.buildo"      %% "ingredients-logging"    % "0.4",
     "io.buildo"      %% "ingredients-jsend"      % "0.3",
     "org.slf4j"      %  "slf4j-api"     % "1.7.7",
     "com.typesafe"   %  "config"        % "1.2.1",
     "com.typesafe.akka" %% "akka-actor" % akkaV,
+    "com.typesafe.akka" %% "akka-slf4j" % akkaV,
     "io.spray"       %% "spray-can"     % sprayV,
     "io.spray"       %% "spray-routing-shapeless2" % sprayV,
     "io.spray"       %% "spray-httpx"   % sprayV,
