@@ -21,6 +21,7 @@ trait MonadicCtrlRouterModule extends RouterModule
                  case CtrlError.InvalidOperation(_)        => StatusCodes.UnprocessableEntity
                  case CtrlError.InvalidCredentials         => StatusCodes.Unauthorized
                  case CtrlError.Forbidden(_)               => StatusCodes.Forbidden
+                 case CtrlError.NotFound                   => StatusCodes.NotFound
                  case _ => StatusCodes.InternalServerError
             }
             em((statusCode, left), ctx)
