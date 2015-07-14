@@ -77,7 +77,7 @@ trait IngLoggingModule extends LoggingModule
   private case class LoggingConfig(
     debugEnabled: Boolean)
 
-  def logsEnabled(name: String, level: Level): Boolean
+  def logsEnabled(name: String, level: Level): Boolean = false
 
   private val loggingConfig = config.get { conf =>
     if (projectName == null) {
@@ -100,19 +100,23 @@ trait IngLoggingModule extends LoggingModule
 
   private val transports = Seq(new transport.Console())
 
-  override def logger(name: String): Logger = Logger(name, transports,
-    PartialFunction { level => (level match {
-      case Level.Debug => loggingConfig.debugEnabled
-      case _ => true
-    }) && logsEnabled(name, level)
-  })
+  @inline
+  private[this] def loggersEnabled(name: String): PartialFunction[Level, Boolean] =
+    PartialFunction { level =>
+      (level match {
+        case Level.Debug => loggingConfig.debugEnabled
+        case _ => true
+      }) &&
+      (logsEnabled(name, level) ||
+       name.startsWith("io.buildo.base") ||
+       name.startsWith("akka"))
+    }
 
-  private[this] def plainOldLogger(name: String): PlainOldLogger = PlainOldLogger(name, transports,
-    PartialFunction { level => (level match {
-      case Level.Debug => loggingConfig.debugEnabled
-      case _ => true
-    }) && logsEnabled(name, level)
-  })
+  override def logger(name: String): Logger =
+    Logger(name, transports, loggersEnabled(name))
+
+  private[this] def plainOldLogger(name: String): PlainOldLogger =
+    PlainOldLogger(name, transports, loggersEnabled(name))
 
   org.slf4j.impl.SimpleLoggerFactory.setLoggerFactoryInterface(
     new org.slf4j.impl.LoggerFactoryInterface {
