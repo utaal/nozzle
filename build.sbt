@@ -7,7 +7,7 @@ libraryDependencies ++= {
   val sprayV = "1.3.3"
   Seq(
     "io.buildo"      %% "spray-autoproductformat" % "0.2",
-    "io.buildo"      %% "ingredients-logging"    % "0.5.2",
+    "io.buildo"      %% "ingredients-logging"    % "0.5.3",
     "io.buildo"      %% "ingredients-jsend"      % "0.3",
     "org.slf4j"      %  "slf4j-api"     % "1.7.7",
     "com.typesafe"   %  "config"        % "1.2.1",

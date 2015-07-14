@@ -98,7 +98,7 @@ trait IngLoggingModule extends LoggingModule
     }
   """)
 
-  private val transports = Seq(new transport.Console())
+  private val transports = Seq(new transport.Console(colorized = true))
 
   @inline
   private[this] def loggersEnabled(name: String): PartialFunction[Level, Boolean] =
