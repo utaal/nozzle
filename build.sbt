@@ -1,3 +1,5 @@
+organization  := "io.buildo"
+
 name := "base"
 
 version := "0.4.1"
