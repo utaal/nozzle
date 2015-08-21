@@ -1,6 +1,18 @@
 name := "base"
 
-version := "0.4.0"
+version := "0.4.1"
+
+scalaVersion  := "2.11.7"
+
+scalacOptions := Seq(
+  "-unchecked",
+  "-deprecation",
+  "-encoding",
+  "utf8")
+
+resolvers ++= Seq(
+  "buildo mvn" at "https://raw.github.com/buildo/mvn/master/releases"
+)
 
 libraryDependencies ++= {
   val akkaV = "2.3.9"
@@ -16,13 +28,11 @@ libraryDependencies ++= {
     "io.spray"       %% "spray-can"     % sprayV,
     "io.spray"       %% "spray-routing-shapeless2" % sprayV,
     "io.spray"       %% "spray-httpx"   % sprayV,
-    "org.scalaz"     %%  "scalaz-core"  % "7.1.1",
-    "joda-time"      %  "joda-time"     % "2.3",
-    "com.github.nscala-time" %% "nscala-time" % "1.2.0",
-    "org.scalatest"  %% "scalatest"     % "2.2.0" % "test",
-    "org.mockito"    %  "mockito-all"   % "1.9.5" % "test"
+    "org.scalaz"     %%  "scalaz-core"  % "7.1.1"
   )
 }
 
 Boilerplate.settings
+
+publishTo := Some(Resolver.file("file", new File("releases")))
 
