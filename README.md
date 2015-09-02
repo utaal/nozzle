@@ -1,9 +1,11 @@
-# base, a set of cake traits for uniform project bootstrap and homogeneus improvement of frequently used features
+# a set of cake traits for uniform project bootstrap and homogeneus improvement of frequently used features
 
 Install with
 
 ```
-libraryDependencies += "io.buildo" %% "base" % <version>
+resolvers += "buildo" at "https://github.com/buildo/mvn/raw/master/releases"
+
+libraryDependencies += "io.buildo" %% "nozzle" % <version>
 ```
 
 ## Provided traits
