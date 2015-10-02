@@ -1,4 +1,4 @@
-package io.buildo.base
+package nozzle
 package annotation
 
 class publishroute

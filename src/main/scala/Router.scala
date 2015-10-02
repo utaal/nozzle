@@ -1,4 +1,4 @@
-package io.buildo.base
+package nozzle
 
 import spray.http._
 import spray.routing._

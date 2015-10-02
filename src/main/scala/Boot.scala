@@ -1,4 +1,4 @@
-package io.buildo.base
+package nozzle
 
 import com.typesafe.config._
 
