@@ -2,7 +2,7 @@
 
 Install with
 
-```
+```scala
 resolvers += "buildo" at "https://github.com/buildo/mvn/raw/master/releases"
 
 libraryDependencies += "io.buildo" %% "nozzle" % <version>
@@ -12,7 +12,7 @@ libraryDependencies += "io.buildo" %% "nozzle" % <version>
 
 *ConfigModule* provides configuration facilities
 
-```
+```scala
 private[this] case class LocalConfig(beAwesome: Boolean)
 
 private[this] val localConfig = config.get { conf =>
@@ -22,7 +22,7 @@ private[this] val localConfig = config.get { conf =>
 
 It requires, in the launcher
 
-```
+```scala
 override def projectName = "<prjname>"
 ```
 
@@ -34,7 +34,7 @@ which sets the namespace for the basic config options, like logging.
 
 *Boot* provides default initialization routines, in your project use the following:
 
-```
+```scala
 private val log = logger("Boot")
 val b = boot()
 import b._
@@ -42,7 +42,7 @@ import b._
 
 *LoggingModule* provides logging facilities. You can enable logging for additional logger names by overriding `logsEnabled`:
 
-```
+```scala
 override def logsEnabled(name: Name, level: io.buildo.base.logging.Level)
 ```
 
