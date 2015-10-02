@@ -1,4 +1,4 @@
-package io.buildo.base
+package nozzle
 
 import spray.json._
 import io.buildo.ingredients.jsend._

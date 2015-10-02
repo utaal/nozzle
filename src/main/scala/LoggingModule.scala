@@ -1,4 +1,4 @@
-package io.buildo.base
+package nozzle
 
 import com.typesafe.config._
 import scala.language.experimental.macros
@@ -108,7 +108,7 @@ trait IngLoggingModule extends LoggingModule
         case _ => true
       }) &&
       (logsEnabled(name, level) ||
-       name.startsWith("io.buildo.base") ||
+       name.startsWith("nozzle") ||
        name.startsWith("akka"))
     }
 
