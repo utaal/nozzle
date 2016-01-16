@@ -1,10 +1,6 @@
-organization  := "io.buildo"
-
 name := "nozzle"
 
 version := "0.6.0-SNAPSHOT"
-
-scalaVersion  := "2.11.7"
 
 scalacOptions := Seq(
   "-unchecked",
@@ -27,9 +23,11 @@ libraryDependencies ++= {
     "io.spray"       %% "spray-can"              % sprayV,
     "io.spray"       %% "spray-routing-shapeless2" % sprayV,
     "io.spray"       %% "spray-httpx"            % sprayV,
-    "org.scalaz"     %% "scalaz-core"            % "7.2.0"
+    "org.scalaz"     %% "scalaz-core"            % "7.2.0",
+    "org.slf4j"      %  "slf4j-api"              % "1.7.7"
   )
 }
 
 Boilerplate.settings
 
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0-M5" cross CrossVersion.full)
