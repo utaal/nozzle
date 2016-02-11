@@ -1,12 +1,12 @@
 package nozzle.webresult
 
 import spray.json._
+import nozzle.jsend._
 import spray.httpx.marshalling._
-import ingredients.jsend._
 import spray.httpx.SprayJsonSupport
 
-trait JSendMarshallingSupport extends MarshallingSupport {
-  type Ok[T] <: WebSuccess[T]
+trait JSendMarshallingSupport extends MarshallingSupport with nozzle.jsend.JSendSupport {
+  protected type Ok[T] <: WebSuccess[T]
   protected def Ok[T](t: T): Ok[T]
 
   import JSendJsonProtocol._
@@ -34,9 +34,6 @@ trait JSendMarshallingSupport extends MarshallingSupport {
   }
 
   implicit def okMarshaller[T](implicit jsendable: JSendable[T], jsonFormat: RootJsonFormat[T]) =
-    SprayJsonSupport.sprayJsonMarshaller[Ok[T]]
-
-  implicit def okPluralMarshaller[T](implicit jsendable: JSendable[T], jsonFormat: RootJsonFormat[T]) =
     SprayJsonSupport.sprayJsonMarshaller[Ok[T]]
 
   implicit val okUnitMarshaller = SprayJsonSupport.sprayJsonMarshaller[Ok[Unit]]

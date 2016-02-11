@@ -14,7 +14,9 @@ resolvers ++= Seq(
 libraryDependencies ++= {
   val akkaV = "2.3.9"
   val sprayV = "1.3.3"
-  Seq()
+  Seq(
+    "io.spray"       %% "spray-json"              % "1.3.2"
+  )
 }
 
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0-M5" cross CrossVersion.full)

@@ -7,8 +7,8 @@ import spray.routing._
 import spray.httpx.marshalling._
 import scala.concurrent.Future
 
-trait MarshallingSupport extends nozzle.webresult.JSendMarshallingSupport {
-  case class WebSuccess[T](value: T) extends nozzle.webresult.WebSuccess[T]
+trait JSendMarshallingSupport extends nozzle.webresult.JSendMarshallingSupport {
+  protected case class WebSuccess[T](value: T) extends nozzle.webresult.WebSuccess[T]
 
   type Ok[T] = WebSuccess[T]
 
@@ -31,3 +31,5 @@ trait MarshallingSupport extends nozzle.webresult.JSendMarshallingSupport {
         m(value.run, ctx)
       }
 }
+
+object JSendMarshallingSupport extends JSendMarshallingSupport
