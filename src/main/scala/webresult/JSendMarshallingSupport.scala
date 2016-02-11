@@ -1,13 +1,13 @@
-package nozzle.monadicctrl
+package nozzle.webresult
 
 import spray.json._
 import spray.httpx.marshalling._
 import ingredients.jsend._
 import spray.httpx.SprayJsonSupport
 
-import nozzle.webresult._
-
-trait JSendMarshallingSupport extends nozzle.monadicctrl.MarshallingSupport {
+trait JSendMarshallingSupport extends MarshallingSupport {
+  type Ok[T] <: WebSuccess[T]
+  protected def Ok[T](t: T): Ok[T]
 
   import JSendJsonProtocol._
 
@@ -50,3 +50,4 @@ trait JSendMarshallingSupport extends nozzle.monadicctrl.MarshallingSupport {
   implicit val webErrorMarshaller = SprayJsonSupport.sprayJsonMarshaller[WebError]
 
 }
+

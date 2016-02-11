@@ -7,11 +7,12 @@ import spray.routing._
 import spray.httpx.marshalling._
 import scala.concurrent.Future
 
-trait MarshallingSupport extends nozzle.webresult.MarshallingSupport {
-  trait Ok[T] {
-    val value: T
-  }
-  protected def Ok[T](t: T): Ok[T]
+trait MarshallingSupport extends nozzle.webresult.JSendMarshallingSupport {
+  case class WebSuccess[T](value: T) extends nozzle.webresult.WebSuccess[T]
+
+  type Ok[T] = WebSuccess[T]
+
+  protected override def Ok[T](t: T): Ok[T] = WebSuccess(t)
 
   import spray.httpx.marshalling._
   implicit def controllerFlowMarshaller[T](implicit m: Marshaller[Ok[T]], em: Marshaller[WebError]) = {

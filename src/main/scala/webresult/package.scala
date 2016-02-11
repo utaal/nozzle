@@ -12,3 +12,7 @@ object WebError {
   case class Forbidden(desc: String) extends WebError
   case object NotFound extends WebError
 }
+
+trait WebSuccess[T] {
+  val value: T
+}
