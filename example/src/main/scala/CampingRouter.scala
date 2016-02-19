@@ -1,6 +1,7 @@
 import models._
 import nozzle.monadicctrl.JSendMarshallingSupport._
 import nozzle.monadicctrl.RoutingHelpers._
+import nozzle.modules.LoggingSupport._
 
 import spray.routing._
 import spray.routing.Directives._
@@ -13,8 +14,8 @@ trait CampingRouter {
   val route: Route
 }
 
-@nozzle.modules.module
-class CampingRouterImpl(campingController: CampingController) extends CampingRouter {
+class CampingRouterImpl(campingController: CampingController)
+(implicit val logger: ModuleLogger[CampingController]) extends CampingRouter {
 
   override val route = {
     pathPrefix("campings") {
