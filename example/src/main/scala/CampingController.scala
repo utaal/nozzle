@@ -19,8 +19,10 @@ trait CampingController {
   def create(camping: Camping): FutureCtrlFlow[Camping]
 }
 
-@nozzle.modules.module
-class CampingControllerImpl(logger: ModuleLogger[CampingController], config: nozzle.config.Config[CampingControllerConfig]) extends CampingController {
+class CampingControllerImpl(
+  implicit val logger: ModuleLogger[CampingController],
+  implicit val config: nozzle.config.Config[CampingControllerConfig]
+) extends CampingController {
   val log = logger.get
 
   def checkCanCreate: FutureCtrlFlow[Unit] = ().point[FutureCtrlFlow]
@@ -39,7 +41,7 @@ class CampingControllerImpl(logger: ModuleLogger[CampingController], config: noz
     Camping(config.aCampingName, 15),
     Camping("Sunset Camping", 22)).point[FutureCtrlFlow]
 
-  def getById(id: Int): FutureCtrlFlow[Camping] = 
+  def getById(id: Int): FutureCtrlFlow[Camping] =
     Camping("Le Marze", 15).point[FutureCtrlFlow]
 
   def create(camping: Camping): FutureCtrlFlow[Camping] =

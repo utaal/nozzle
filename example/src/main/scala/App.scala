@@ -10,8 +10,8 @@ object Example extends App {
       ConfigProvider.empty
         .add(CampingControllerConfig("Le Marze"))
 
-  implicit val campingController = CampingControllerImpl.apply
-  implicit val campingRouter = CampingRouterImpl.apply
+  val campingController = new CampingControllerImpl
+  val campingRouter = new CampingRouterImpl(campingController)
 
   val server = Server(
     "test",
