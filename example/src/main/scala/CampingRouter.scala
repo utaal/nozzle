@@ -8,14 +8,16 @@ import spray.routing.Directives._
 import spray.httpx.SprayJsonSupport._
 import ExampleJsonProtocol._
 
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext
 
 trait CampingRouter {
   val route: Route
 }
 
-class CampingRouterImpl(campingController: CampingController)
-(implicit val logger: ModuleLogger[CampingController]) extends CampingRouter {
+class CampingRouterImpl(campingController: CampingController)(implicit
+  executionContext: ExecutionContext,
+  logger: ModuleLogger[CampingController]
+) extends CampingRouter {
 
   override val route = {
     pathPrefix("campings") {

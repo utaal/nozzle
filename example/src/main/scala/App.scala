@@ -2,8 +2,13 @@ import nozzle.server._
 import nozzle.server.LoggingSupport._
 import nozzle.modules.LoggingSupport._
 
+import scala.concurrent.ExecutionContext
+
 object Example extends App {
   implicit val logging = nozzle.logging.BasicLogging()
+
+  implicit val globalExecutionContext: ExecutionContext =
+    ExecutionContext.global
 
   import nozzle.config._
   implicit val configProvider =

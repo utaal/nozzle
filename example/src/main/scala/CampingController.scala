@@ -8,7 +8,7 @@ import scalaz.EitherT._
 
 import nozzle.monadicctrl._
 
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext
 
 case class CampingControllerConfig(aCampingName: String)
 
@@ -19,9 +19,10 @@ trait CampingController {
   def create(camping: Camping): FutureCtrlFlow[Camping]
 }
 
-class CampingControllerImpl(
-  implicit val logger: ModuleLogger[CampingController],
-  implicit val config: nozzle.config.Config[CampingControllerConfig]
+class CampingControllerImpl(implicit
+  executionContext: ExecutionContext,
+  logger: ModuleLogger[CampingController],
+  config: nozzle.config.Config[CampingControllerConfig]
 ) extends CampingController {
   val log = logger.get
 
