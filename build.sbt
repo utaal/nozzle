@@ -1,6 +1,6 @@
 name := "nozzle"
 
-version := "0.10.2-SNAPSHOT"
+version := "0.10.2"
 
 scalacOptions := Seq(
   "-unchecked",
