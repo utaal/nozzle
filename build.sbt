@@ -1,6 +1,6 @@
 name := "nozzle"
 
-version := "0.6.0-SNAPSHOT"
+version := "0.10.1"
 
 scalacOptions := Seq(
   "-unchecked",
@@ -32,3 +32,7 @@ libraryDependencies ++= {
 Boilerplate.settings
 
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0-M5" cross CrossVersion.full)
+
+bintrayOrganization := Some("buildo")
+
+licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
