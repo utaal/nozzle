@@ -38,4 +38,4 @@ object JSendMarshallingSupport extends JSendMarshallingSupport
 
 trait UnwrappedMarshallingSupport extends MarshallingSupport with nozzle.webresult.UnwrappedMarshallingSupport
 
-object UnwrappedMarshallingSupport extends JSendMarshallingSupport
+object UnwrappedMarshallingSupport extends UnwrappedMarshallingSupport
