@@ -6,8 +6,6 @@ import spray.httpx.marshalling._
 import spray.httpx.SprayJsonSupport
 
 trait JSendMarshallingSupport extends MarshallingSupport with nozzle.jsend.JSendSupport {
-  protected type Ok[T] <: WebSuccess[T]
-  protected def Ok[T](t: T): Ok[T]
 
   import JSendJsonProtocol._
 
@@ -33,16 +31,16 @@ trait JSendMarshallingSupport extends MarshallingSupport with nozzle.jsend.JSend
     }
   }
 
-  implicit def okMarshaller[T](implicit jsendable: JSendable[T], jsonFormat: RootJsonFormat[T]) =
-    SprayJsonSupport.sprayJsonMarshaller[Ok[T]]
-
-  implicit val okUnitMarshaller = SprayJsonSupport.sprayJsonMarshaller[Ok[Unit]]
-
   private implicit def webErrorRootJsonFormat(implicit toMessageStr: WebError => String) =
     new RootJsonWriter[WebError] {
 
     def write(webError: WebError) = JSendError(message = toMessageStr(webError)).toJson
   }
+
+  implicit def okMarshaller[T](implicit jsendable: JSendable[T], jsonFormat: RootJsonFormat[T]) =
+    SprayJsonSupport.sprayJsonMarshaller[Ok[T]]
+
+  implicit val okUnitMarshaller = SprayJsonSupport.sprayJsonMarshaller[Ok[Unit]]
 
   implicit val webErrorMarshaller = SprayJsonSupport.sprayJsonMarshaller[WebError]
 

@@ -3,6 +3,9 @@ package nozzle.webresult
 import spray.http._
 
 trait MarshallingSupport {
+  protected type Ok[T] <: WebSuccess[T]
+  protected def Ok[T](t: T): Ok[T]
+
   implicit def webErrorToStatusCode(webError: WebError) = webError match {
     case WebError.InvalidParam(_, _)  => StatusCodes.UnprocessableEntity
     case WebError.InvalidParams(_)    => StatusCodes.UnprocessableEntity
@@ -23,4 +26,5 @@ trait MarshallingSupport {
     case WebError.InvalidCredentials     => "Invalid credentials"
     case WebError.NotFound               => "Not found"
   }
+
 }

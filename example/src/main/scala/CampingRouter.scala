@@ -1,5 +1,5 @@
 import models._
-import nozzle.monadicctrl.JSendMarshallingSupport._
+import nozzle.monadicctrl.UnwrappedMarshallingSupport._
 import nozzle.monadicctrl.RoutingHelpers._
 import nozzle.modules.LoggingSupport._
 
