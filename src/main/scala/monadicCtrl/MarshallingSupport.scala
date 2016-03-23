@@ -32,10 +32,14 @@ trait MarshallingSupport extends nozzle.webresult.MarshallingSupport {
       }
 }
 
-trait JSendMarshallingSupport extends MarshallingSupport with nozzle.webresult.JSendMarshallingSupport
+trait JSendMarshallingSupport extends MarshallingSupport
+  with DefaultMarshallingSupport
+  with nozzle.webresult.JSendMarshallingSupport
 
 object JSendMarshallingSupport extends JSendMarshallingSupport
 
-trait UnwrappedMarshallingSupport extends MarshallingSupport with nozzle.webresult.UnwrappedMarshallingSupport
+trait UnwrappedMarshallingSupport extends MarshallingSupport
+  with DefaultMarshallingSupport
+  with nozzle.webresult.UnwrappedMarshallingSupport
 
 object UnwrappedMarshallingSupport extends UnwrappedMarshallingSupport
