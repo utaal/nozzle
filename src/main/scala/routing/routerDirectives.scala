@@ -44,28 +44,30 @@ object logging extends Logging
 trait WebRouterDirectives {
   def compressRequestResponse(magnet: RefFactoryMagnet): Directive0 = decompressRequest & compressResponseIfRequested(magnet)
 
-  private[this] def corsHandler(allowedOrigins: AllowedOrigins, innerRoute: Route): Route = {
+  private[this] def corsHandler(allowedOrigins: AllowedOrigins, allowedHeaders: Set[String], innerRoute: Route): Route = {
     respondWithHeaders(
       HttpHeaders.`Access-Control-Allow-Origin`(allowedOrigins),
       HttpHeaders.`Access-Control-Allow-Credentials`(true),
-      HttpHeaders.`Access-Control-Allow-Headers`("Content-Type", "Authorization"),
+      HttpHeaders.`Access-Control-Allow-Headers`(allowedHeaders.toSeq),
       HttpHeaders.`Access-Control-Allow-Methods`(List(HttpMethods.POST, HttpMethods.PUT, HttpMethods.GET, HttpMethods.DELETE, HttpMethods.OPTIONS))
     ) ((options (complete(StatusCodes.NoContent))) ~ innerRoute)
   }
 
-  def cors(allowedHostnames: Set[String]): Directive0 = mapInnerRoute { innerRoute =>
+  def cors(allowedHostnames: Set[String], allowedHeaders: Set[String]): Directive0 = mapInnerRoute { innerRoute =>
     optionalHeaderValueByType[HttpHeaders.Origin]() { originOption =>
       originOption.flatMap { case HttpHeaders.Origin(origins) =>
         origins.find {
           case HttpOrigin(_, HttpHeaders.Host(hostname, _)) => allowedHostnames.contains(hostname)
         }
-      }.map(allowedOrigin => corsHandler(SomeOrigins(Seq(allowedOrigin)), innerRoute)).getOrElse(innerRoute)
+      }.map(allowedOrigin => corsHandler(SomeOrigins(Seq(allowedOrigin)), allowedHeaders, innerRoute)).getOrElse(innerRoute)
     }
   }
 
-  def corsWildcard: Directive0 = mapInnerRoute { innerRoute =>
-    corsHandler(AllOrigins, innerRoute)
+  def corsWildcard(allowedHeaders: Set[String]): Directive0 = mapInnerRoute { innerRoute =>
+    corsHandler(AllOrigins, allowedHeaders, innerRoute)
   }
+
+  case class AllowedHeaders(headers: Set[String])
 
   sealed abstract trait AllowOriginsFrom
   object AllowOriginsFrom {
@@ -73,9 +75,12 @@ trait WebRouterDirectives {
     case object AllHostnames extends AllowOriginsFrom
   }
 
-  def cors(allowedHostnames: AllowOriginsFrom): Directive0 = allowedHostnames match {
-    case AllowOriginsFrom.TheseHostnames(hostnames) => cors(hostnames)
-    case AllowOriginsFrom.AllHostnames => corsWildcard
+  def cors(
+    allowedHostnames: AllowOriginsFrom,
+    allowedHeaders: AllowedHeaders
+  ): Directive0 = allowedHostnames match {
+    case AllowOriginsFrom.TheseHostnames(hostnames) => cors(hostnames, allowedHeaders.headers)
+    case AllowOriginsFrom.AllHostnames => corsWildcard(allowedHeaders.headers)
   }
 }
 
