@@ -11,8 +11,8 @@ object WebError {
   case object InvalidCredentials extends WebError
   case class Forbidden(desc: String) extends WebError
   case object NotFound extends WebError
-  case class GenericError(statusCode: StatusCode, error: GenericErrorDesc) extends WebError
-  case class GenericErrors(statusCode: StatusCode, errors: List[GenericErrorDesc]) extends WebError
+  case class GenericError(error: GenericErrorDesc) extends WebError
+  case class GenericErrors(errors: List[GenericErrorDesc]) extends WebError
 }
 
 trait WebSuccess[T] {
