@@ -11,8 +11,8 @@ trait DefaultMarshallingSupport extends MarshallingSupport {
     case WebError.InvalidCredentials              => StatusCodes.Unauthorized
     case WebError.Forbidden(_)                    => StatusCodes.Forbidden
     case WebError.NotFound                        => StatusCodes.NotFound
-    case WebError.GenericError(statusCode, _)     => statusCode
-    case WebError.GenericErrors(statusCode, _)    => statusCode
+    case WebError.GenericError(_)                 => StatusCodes.BadRequest
+    case WebError.GenericErrors(_)                => StatusCodes.BadRequest
   }
 
   implicit def webErrorToMessageString(webError: WebError) = webError match {
@@ -25,8 +25,8 @@ trait DefaultMarshallingSupport extends MarshallingSupport {
     case WebError.InvalidOperation(desc)   => s"Invalid operation. $desc"
     case WebError.InvalidCredentials       => "Invalid credentials"
     case WebError.NotFound                 => "Not found"
-    case WebError.GenericError(_, error)   => error.desc
-    case WebError.GenericErrors(_, errors) => {
+    case WebError.GenericError(error)   => error.desc
+    case WebError.GenericErrors(errors) => {
       val errorsDesc = errors mkString ", "
       s"Errors description: $errorsDesc"
     }
