@@ -1,0 +1,4 @@
+package nozzle.monadicctrl
+
+object DefaultErrorRoutingHelpers extends RoutingHelpers with DefaultErrorMonadicCtrl
+

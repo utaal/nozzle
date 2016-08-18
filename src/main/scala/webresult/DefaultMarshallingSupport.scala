@@ -3,26 +3,27 @@ package nozzle.webresult
 import spray.http.{ StatusCode, StatusCodes }
 
 trait DefaultMarshallingSupport extends MarshallingSupport {
+  type WebError = DefaultWebError
 
   implicit def webErrorToStatusCode(webError: WebError) = webError match {
-    case WebError.InvalidParam(_, _)  => StatusCodes.UnprocessableEntity
-    case WebError.InvalidParams(_)    => StatusCodes.UnprocessableEntity
-    case WebError.InvalidOperation(_) => StatusCodes.UnprocessableEntity
-    case WebError.InvalidCredentials  => StatusCodes.Unauthorized
-    case WebError.Forbidden(_)        => StatusCodes.Forbidden
-    case WebError.NotFound            => StatusCodes.NotFound
+    case DefaultWebError.InvalidParam(_, _)  => StatusCodes.UnprocessableEntity
+    case DefaultWebError.InvalidParams(_)    => StatusCodes.UnprocessableEntity
+    case DefaultWebError.InvalidOperation(_) => StatusCodes.UnprocessableEntity
+    case DefaultWebError.InvalidCredentials  => StatusCodes.Unauthorized
+    case DefaultWebError.Forbidden(_)        => StatusCodes.Forbidden
+    case DefaultWebError.NotFound            => StatusCodes.NotFound
   }
 
   implicit def webErrorToMessageString(webError: WebError) = webError match {
-    case WebError.Forbidden(desc)            => s"Forbidden: $desc"
-    case WebError.InvalidParam(param, value) => s"Invalid parameter: ${param.name} ($value)"
-    case WebError.InvalidParams(params) => {
+    case DefaultWebError.Forbidden(desc)            => s"Forbidden: $desc"
+    case DefaultWebError.InvalidParam(param, value) => s"Invalid parameter: ${param.name} ($value)"
+    case DefaultWebError.InvalidParams(params) => {
       val errors = params mkString ", "
-      s"Invalid parameters: $errors"
+      s"IDefaultnvalid parameters: $errors"
     }
-    case WebError.InvalidOperation(desc) => s"Invalid operation. $desc"
-    case WebError.InvalidCredentials     => "Invalid credentials"
-    case WebError.NotFound               => "Not found"
+    case DefaultWebError.InvalidOperation(desc) => s"Invalid operation. $desc"
+    case DefaultWebError.InvalidCredentials     => "Invalid credentials"
+    case DefaultWebError.NotFound               => "Not found"
   }
 
 }

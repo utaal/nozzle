@@ -1,6 +1,6 @@
 import models._
 import nozzle.monadicctrl.UnwrappedMarshallingSupport._
-import nozzle.monadicctrl.RoutingHelpers._
+import nozzle.monadicctrl.DefaultErrorRoutingHelpers._
 import nozzle.modules.LoggingSupport._
 
 import spray.routing._

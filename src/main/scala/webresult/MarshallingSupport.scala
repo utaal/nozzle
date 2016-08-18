@@ -3,6 +3,7 @@ package nozzle.webresult
 import spray.http.StatusCode
 
 trait MarshallingSupport {
+  type WebError
   protected type Ok[T] <: WebSuccess[T]
   protected def Ok[T](t: T): Ok[T]
 

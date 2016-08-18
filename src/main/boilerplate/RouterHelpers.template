@@ -4,7 +4,7 @@ import nozzle.webresult._
 
 import scala.concurrent.Future
 
-trait RoutingHelpers {
+trait RoutingHelpers extends MonadicCtrl {
   import spray.json._
   import spray.http._
   import spray.httpx.marshalling._

@@ -6,7 +6,7 @@ import scalaz._
 import Scalaz._
 import scalaz.EitherT._
 
-import nozzle.monadicctrl._
+import nozzle.monadicctrl.DefaultErrorMonadicCtrl._
 
 import scala.concurrent.ExecutionContext
 

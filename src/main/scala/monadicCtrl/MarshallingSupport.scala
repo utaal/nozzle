@@ -7,7 +7,7 @@ import spray.routing._
 import spray.httpx.marshalling._
 import scala.concurrent.Future
 
-trait MarshallingSupport extends nozzle.webresult.MarshallingSupport {
+trait MarshallingSupport extends MonadicCtrl with nozzle.webresult.MarshallingSupport {
   protected case class WebSuccess[T](value: T) extends nozzle.webresult.WebSuccess[T]
 
   type Ok[T] = WebSuccess[T]
