@@ -5,14 +5,12 @@ import spray.http.{ StatusCode, StatusCodes }
 trait DefaultMarshallingSupport extends MarshallingSupport {
 
   implicit def webErrorToStatusCode(webError: WebError) = webError match {
-    case WebError.InvalidParam(_, _)              => StatusCodes.UnprocessableEntity
-    case WebError.InvalidParams(_)                => StatusCodes.UnprocessableEntity
-    case WebError.InvalidOperation(_)             => StatusCodes.UnprocessableEntity
-    case WebError.InvalidCredentials              => StatusCodes.Unauthorized
-    case WebError.Forbidden(_)                    => StatusCodes.Forbidden
-    case WebError.NotFound                        => StatusCodes.NotFound
-    case WebError.GenericError(_)                 => StatusCodes.BadRequest
-    case WebError.GenericErrors(_)                => StatusCodes.BadRequest
+    case WebError.InvalidParam(_, _)  => StatusCodes.UnprocessableEntity
+    case WebError.InvalidParams(_)    => StatusCodes.UnprocessableEntity
+    case WebError.InvalidOperation(_) => StatusCodes.UnprocessableEntity
+    case WebError.InvalidCredentials  => StatusCodes.Unauthorized
+    case WebError.Forbidden(_)        => StatusCodes.Forbidden
+    case WebError.NotFound            => StatusCodes.NotFound
   }
 
   implicit def webErrorToMessageString(webError: WebError) = webError match {
@@ -22,14 +20,9 @@ trait DefaultMarshallingSupport extends MarshallingSupport {
       val errors = params mkString ", "
       s"Invalid parameters: $errors"
     }
-    case WebError.InvalidOperation(desc)   => s"Invalid operation. $desc"
-    case WebError.InvalidCredentials       => "Invalid credentials"
-    case WebError.NotFound                 => "Not found"
-    case WebError.GenericError(error)   => error.desc
-    case WebError.GenericErrors(errors) => {
-      val errorsDesc = errors mkString ", "
-      s"Errors description: $errorsDesc"
-    }
+    case WebError.InvalidOperation(desc) => s"Invalid operation. $desc"
+    case WebError.InvalidCredentials     => "Invalid credentials"
+    case WebError.NotFound               => "Not found"
   }
 
 }
